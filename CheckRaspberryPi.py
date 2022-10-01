@@ -19,7 +19,8 @@ def microCenter(text):
     soup = BeautifulSoup(text, 'html.parser')
     inventoryCnt = soup.find('span', {'class': 'inventoryCnt'})
     # print(f'{inventoryCnt.text = }')
-    messages.append(f'microcenter: {inventoryCnt.text}')
+    if inventoryCnt:
+        messages.append(f'microcenter: {inventoryCnt.text}')
     # print([content for content in inventoryCnt.contents if isinstance(content, str)])
 
 def vilros(text):
@@ -79,9 +80,6 @@ def chicagoDist(text):
     else:
         # print('in stock at chicago dist stores')
         messages.append('in stock at chicago dist stores')
-
-
-
 
 
 def main():
