@@ -46,7 +46,7 @@ def driver(*args, **kwargs):
     # firefox_options.add_argument('--disable-dev-shm-usage')
     # firefox_options.add_argument("--incognito")
     # firefox_options.add_argument('--disable-blink-features=AutomationControlled')
-    firefox_options.add_argument("--headless")
+    # firefox_options.add_argument("--headless")
     # firefox_options.add_argument(f'user-agent={fake_agent}')
     # firefox_options.add_argument('--ignore-ssl-errors=yes')
     # firefox_options.add_argument('--ignore-certificate-errors')
@@ -68,7 +68,7 @@ class Bot:
 
     def login(self):
         driver = self.driver
-        driver.get('https://leetcode.com/accounts/login/')
+        driver.get('https://leetcode.com/accounts/login/?next=%2Fproblemset%2Fall%2F')
         driver.implicitly_wait(3)
         sleep(random.uniform(2,3))
         driver.find_element(By.NAME, "login").send_keys(os.getenv("EMAIL"))
@@ -82,7 +82,9 @@ class Bot:
         sleep(5)
 
         driver.save_screenshot('test.png')
-        sleep(1)
+        sleep(60)
+        if os.path.exists('test.png'):
+            os.remove('test.png')
 
 
 
