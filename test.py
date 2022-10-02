@@ -4,7 +4,6 @@
 
 # send_message('from cron')
 
-from urllib import request
 from bs4 import BeautifulSoup
 import requests, re
 
