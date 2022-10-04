@@ -56,7 +56,6 @@ def driver(*args, **kwargs):
         d.quit()
 
 class FaceBookBot:
-
     def __init__(self, driver, config) -> None:
         self.driver = driver
         self.title = config['title']
@@ -68,7 +67,6 @@ class FaceBookBot:
         self.videoFilePath = [os.getcwd() + config['videoFilePath'] + fname for fname in os.listdir(os.getcwd() + config['videoFilePath'])]
         print(self.photoFilePath)
         print(self.videoFilePath)
-
 
     def listItem(self):
         driver = self.driver
@@ -181,17 +179,79 @@ class FaceBookBot:
         # if os.path.exists(f'{os.getcwd()}/test.png'):
         #     os.remove('test.png')
 
+class CraigslistBot:
+    def __init__(self, driver, config=None) -> None:
+        self.driver = driver
+        self.url = 'https://post.craigslist.org/k/pmSEkY5D7RGylirGjUnhTA/lELQg?s=type'
+        self.imgs = [os.getcwd() + config['photoFilePath'] + fname for fname in os.listdir(os.getcwd() + "/product_imgs/skateboard/")]
+    def listItem(self):
+        driver = self.driver
+        driver.get(self.url)
+        driver.maximize_window()
+        driver.implicitly_wait(3)
+        sleep(random.uniform(2,3))
+
+
+        # form = driver.find_element(By.CLASS_NAME, 'picker')
+
+        # # print(form.text)
+
+        # ul = driver.find_element(By.CLASS_NAME, 'selection-list')
+
+        radioButtons = driver.find_elements(By.XPATH, "//input[@type='radio']")
+
+        for rb in radioButtons:
+            if rb:
+                print(rb.tag_name)
+                print(rb.find_element(By.XPATH, '../..').text)
+                if rb.find_element(By.XPATH, '../..').text == 'for sale by owner':
+                    rb.click()
+                    break
+
+        driver.find_element(By.XPATH, '//button[@value="Continue"]').click()
+
+        sleep(random.uniform(2,3))
+
+        # TODO: add information from config file here
+
+
+        driver.find_element(By.XPATH, '//button[@value="Continue"]').click()
+
+        sleep(random.uniform(2,3))
+
+        # move past the gps part
+        driver.find_element(By.XPATH, '//button[@value="Continue"]').click()
+
+        # upload images here
+        for img in self.imgs:
+            driver.find_element(By.XPATH,'//input[@type="file"]').send_keys(img)
+
+        sleep(random.uniform(2,3))
+
+        driver.find_element(By.XPATH, '//button[@value="Done with Images"]').click()
+
+
+        sleep(random.uniform(2,3))
+
+        # click on publish button
+        driver.find_element(By.XPATH, '//button[text()="publish"]').click()
 
 
 def main():
+    # start = perf_counter()
+    # # grab data from config file
+    # with driver() as wd:
+    #     with open(f'{os.getcwd()}/configs/facebook.json') as configList:
+    #         for config in json.load(configList):
+    #             bot = FaceBookBot(wd, config)
+    #             bot.listItem()
+    # print('time in ms: {}'.format((perf_counter() - start) * 1000))
 
     start = perf_counter()
     # grab data from config file
     with driver() as wd:
-        with open(f'{os.getcwd()}/configs/facebook.json') as configList:
-            for config in json.load(configList):
-                bot = FaceBookBot(wd, config)
-                bot.listItem()
+        bot = CraigslistBot(wd)
+        bot.listItem()
     print('time in ms: {}'.format((perf_counter() - start) * 1000))
 
 
