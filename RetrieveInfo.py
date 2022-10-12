@@ -22,16 +22,16 @@ res = json.loads((r.content).decode('utf-8'))
 pprint.pprint(res)
 print(type(res))
 
-baseDir = '/home/leo_zhang/Documents/GitHub/'
-currentGitHubFolder = None
-for obj in res:
-    for k, v in obj:
-        if k == 'title':
-            currentGitHubFolder = v
-        elif k == 'secrets':
-            # create file in the directory baseDir + v
-            if currentGitHubFolder:
-                with open(baseDir+currentGitHubFolder+'/.env', 'a') as f:
-                    for exp in v:
-                        f.write(exp)
-
+#baseDir = '/home/leo_zhang/Documents/GitHub/'
+#currentGitHubFolder = None
+#for obj in res:
+#    for k, v in obj:
+#        if k == 'title':
+#            currentGitHubFolder = v
+#        elif k == 'secrets':
+#            # create file in the directory baseDir + v
+#            if currentGitHubFolder:
+#                with open(baseDir+currentGitHubFolder+'/.env', 'a') as f:
+#                    for exp in v:
+#                        f.write(exp)
+#
