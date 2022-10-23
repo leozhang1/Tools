@@ -1,6 +1,11 @@
 import os
 import shutil
-from secrets import Secrets
+from dotenv import load_dotenv
+import filecmp
+import glob
+
+load_dotenv()
+
 # code by Leo
 # inspired by this link: https://www.youtube.com/watch?v=KBjBPQExJLw&t=8s
 class FileUtils:
@@ -35,5 +40,46 @@ class FileUtils:
             shutil.move(currentFilePath, destinationFilePath)
 
 
-if Secrets.PATH_TO_ORGANIZE and os.path.exists(Secrets.PATH_TO_ORGANIZE):
-    FileUtils.organizeFilesIntoFolders(Secrets.PATH_TO_ORGANIZE)
+    @staticmethod
+    def copyOverFile(sourceFile, destinationFile):
+        '''
+        compare the files to see if they're identical.
+        If they are then don't copy overwrite to destinationPath.
+        Otherwise overwrite
+        '''
+        # check that both files exist
+        if not os.path.exists(sourceFile):
+            return
+        if os.path.exists(destinationFile):
+            # check that both files are the same
+            if filecmp.cmp(sourceFile, destinationFile):
+                return
+
+        # overwrite contents of destinationFile with those of the source
+        with open(sourceFile) as sf:
+            contents = f.readlines()
+            with open(destinationFile, 'w') as df:
+                df.write(contents)
+
+    @staticmethod
+    def copyOverFolder(sourceFolder, destinationFolder):
+        # check that source file exist
+        if not os.path.exists(sourceFolder):
+            return
+        # create destination folder if it doesn't exist already
+        if not os.path.exists(destinationFolder):
+            shutil.copytree(sourceFolder, os.path.basename(destinationFolder))
+
+        # recursively check and compare all files in the source folder
+        # maybe try filecmp.dircmp ?
+
+
+
+
+
+
+
+
+
+#if os.getenv('PATH_TO_ORGANIZE') and os.path.exists(os.getenv('PATH_TO_ORGANIZE')):
+#    FileUtils.organizeFilesIntoFolders(os.getenv('PATH_TO_ORGANIZE'))
