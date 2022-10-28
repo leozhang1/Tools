@@ -1,10 +1,10 @@
 import os
 import shutil
-from dotenv import load_dotenv
 import filecmp
 import glob
 
-load_dotenv()
+# from dotenv import load_dotenv
+# load_dotenv()
 
 # code by Leo
 # inspired by this link: https://www.youtube.com/watch?v=KBjBPQExJLw&t=8s
@@ -49,17 +49,20 @@ class FileUtils:
         '''
         # check that both files exist
         if not os.path.exists(sourceFile):
+            print('source file does not exist')
             return
         if os.path.exists(destinationFile):
             # check that both files are the same
             if filecmp.cmp(sourceFile, destinationFile):
+                print('files are the same')
                 return
 
+        print('overwriting destination file with the source')
         # overwrite contents of destinationFile with those of the source
         with open(sourceFile) as sf:
-            contents = f.readlines()
+            contents = sf.readlines()
             with open(destinationFile, 'w') as df:
-                df.write(contents)
+                df.writelines(contents)
 
     @staticmethod
     def copyOverFolder(sourceFolder, destinationFolder):
@@ -72,7 +75,7 @@ class FileUtils:
 
         # recursively check and compare all files in the source folder
         # maybe try filecmp.dircmp ?
-
+        pass
 
 
 
