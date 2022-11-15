@@ -15,31 +15,31 @@ wallpapers = os.listdir(PATH_TO_WALLPAPERS)
 for wallpaper in wallpapers:
     print(wallpaper)
 
-print(len(wallpapers))
+# print(len(wallpapers))
 
 def main():
     # get the file name (without the path to it) of the wallpaper from the bash script
     filename = None
-    
+
     if os.stat(BASH_SCRIPT_PATH).st_size == 0:
         with open(BASH_SCRIPT_PATH, 'w') as f:
             f.write(f'feh --bg-fill {PATH_TO_WALLPAPERS}{wallpapers[0]}')
         return
-    
-    
+
+
     with open(BASH_SCRIPT_PATH, 'r') as f:
         # parse out the previous filename
         cmd = f.readline()
         print(cmd)
         get_match = re.search('\/([A-Za-z_0-9-\s.]+\.[A-Za-z]{3,4})', cmd)
         filename = get_match.group(1) if get_match else None
-            
+
     with open(BASH_SCRIPT_PATH, 'w') as w:
-        if filename: 
+        if filename:
             # find the position of the current filename
             # TODO: dont assume filename is in the directory
             pos = wallpapers.index(filename)
-            print(f'position: {pos}')
+            # print(f'position: {pos}')
             # write the next wallpaper at the (p + 1)th position to the bash script
             w.write(f'feh --bg-fill {PATH_TO_WALLPAPERS}{wallpapers[(pos+1)%len(wallpapers)]}')
 

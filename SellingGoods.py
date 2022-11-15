@@ -182,59 +182,101 @@ class FaceBookBot:
 class CraigslistBot:
     def __init__(self, driver, config=None) -> None:
         self.driver = driver
-        self.url = 'https://post.craigslist.org/k/pmSEkY5D7RGylirGjUnhTA/lELQg?s=type'
+        self.url = 'https://orlando.craigslist.org/'
         self.imgs = [os.getcwd() + config['photoFilePath'] + fname for fname in os.listdir(os.getcwd() + "/product_imgs/skateboard/")]
+        print(config)
+        self.config = config
+        driver.get(self.url)
+        driver.implicitly_wait(3)
+        self.driver.find_element(By.ID, "post").click()
+
     def listItem(self):
         driver = self.driver
-        driver.get(self.url)
-        driver.maximize_window()
-        driver.implicitly_wait(3)
+
+        def getRadioButtonByText(text):
+            radioButtons = driver.find_elements(By.XPATH, "//input[@type='radio']")
+            for rb in radioButtons:
+                if rb:
+                    print(rb.tag_name)
+                    print(rb.find_element(By.XPATH, '../..').text)
+                    if text in rb.find_element(By.XPATH, '../..').text.strip():
+                        print('FOUND radio button')
+                        rb.click()
+                        break
+
+        # driver.maximize_window()
+
         sleep(random.uniform(2,3))
 
+        getRadioButtonByText(self.config['posting-type'])
 
-        # form = driver.find_element(By.CLASS_NAME, 'picker')
+        try:
+            driver.find_element(By.XPATH, '//button[@value="Continue"]').click()
+        except Exception as e:
+            pass
 
-        # # print(form.text)
+        sleep(random.uniform(2,3))
 
-        # ul = driver.find_element(By.CLASS_NAME, 'selection-list')
+        getRadioButtonByText(self.config['category'])
 
-        radioButtons = driver.find_elements(By.XPATH, "//input[@type='radio']")
+        try:
+            driver.find_element(By.XPATH, '//button[@value="continue"]').click()
+        except Exception as e:
+            pass
 
-        for rb in radioButtons:
-            if rb:
-                print(rb.tag_name)
-                print(rb.find_element(By.XPATH, '../..').text)
-                if rb.find_element(By.XPATH, '../..').text == 'for sale by owner':
-                    rb.click()
+        postingTitle = self.config['title']
+        postalCode = self.config['zip-code']
+        description = self.config['description']
+        email = self.config['my-email']
+        price = self.config['price']
+
+        driver.find_element(By.ID,'PostingTitle').send_keys(postingTitle)
+        driver.find_element(By.NAME,'price').send_keys(price)
+        driver.find_element(By.ID,'postal_code').send_keys(postalCode)
+        driver.find_element(By.ID,'PostingBody').send_keys(description)
+        driver.find_element(By.NAME,'FromEMail').send_keys(email)
+
+        sleep(random.uniform(2,3))
+
+        try:
+            driver.find_element(By.XPATH, '//button[@value="continue"]').click()
+        except Exception as e:
+            pass
+
+        sleep(random.uniform(2,3))
+
+        try:
+            # move past the gps part
+            for button in driver.find_elements(By.TAG_NAME, 'button'):
+                if 'continue bigbutton' in button.get_attribute('class'):
+                    button.click()
                     break
+            print('moved past gps part')
+        except Exception as e:
+            pass
 
-        driver.find_element(By.XPATH, '//button[@value="Continue"]').click()
-
-        sleep(random.uniform(2,3))
-
-        # TODO: add information from config file here
-
-
-        driver.find_element(By.XPATH, '//button[@value="Continue"]').click()
-
-        sleep(random.uniform(2,3))
-
-        # move past the gps part
-        driver.find_element(By.XPATH, '//button[@value="Continue"]').click()
-
-        # upload images here
-        for img in self.imgs:
-            driver.find_element(By.XPATH,'//input[@type="file"]').send_keys(img)
+        try:
+            # upload images here
+            print('uploading images')
+            for img in self.imgs:
+                driver.find_element(By.XPATH,'//input[@type="file"]').send_keys(img)
+        except Exception as e:
+            pass
 
         sleep(random.uniform(2,3))
 
-        driver.find_element(By.XPATH, '//button[@value="Done with Images"]').click()
-
+        try:
+            driver.find_element(By.XPATH, '//button[@value="Done with Images"]').click()
+        except Exception as e:
+            pass
 
         sleep(random.uniform(2,3))
 
         # click on publish button
-        driver.find_element(By.XPATH, '//button[text()="publish"]').click()
+        # driver.find_element(By.XPATH, '//button[text()="publish"]').click()
+        print('should click on publish button')
+        sleep(500)
+
 
 
 def main():
@@ -250,8 +292,10 @@ def main():
     start = perf_counter()
     # grab data from config file
     with driver() as wd:
-        bot = CraigslistBot(wd)
-        bot.listItem()
+        with open(f'{os.getcwd()}/configs/craigslist.json') as configList:
+            for config in json.load(configList):
+                bot = CraigslistBot(wd, config)
+                bot.listItem()
     print('time in ms: {}'.format((perf_counter() - start) * 1000))
 
 
