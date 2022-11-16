@@ -3,7 +3,6 @@ import os
 import random
 from contextlib import contextmanager
 from time import sleep, perf_counter
-from unicodedata import category
 
 from dotenv import load_dotenv
 from fake_useragent import FakeUserAgentError, UserAgent
@@ -65,8 +64,8 @@ class FaceBookBot:
         self.description = config['description']
         self.photoFilePath = [os.getcwd() + config['photoFilePath'] + fname for fname in os.listdir(os.getcwd() + config['photoFilePath'])]
         self.videoFilePath = [os.getcwd() + config['videoFilePath'] + fname for fname in os.listdir(os.getcwd() + config['videoFilePath'])]
-        print(self.photoFilePath)
-        print(self.videoFilePath)
+        # print(self.photoFilePath)
+        # print(self.videoFilePath)
 
     def listItem(self):
         driver = self.driver
@@ -184,7 +183,7 @@ class CraigslistBot:
         self.driver = driver
         self.url = 'https://orlando.craigslist.org/'
         self.imgs = [os.getcwd() + config['photoFilePath'] + fname for fname in os.listdir(os.getcwd() + "/product_imgs/skateboard/")]
-        print(config)
+        # print(config)
         self.config = config
         driver.get(self.url)
         driver.implicitly_wait(3)
@@ -193,14 +192,21 @@ class CraigslistBot:
     def listItem(self):
         driver = self.driver
 
-        def getRadioButtonByText(text):
+        def getRadioButtonByText(text, className):
+            # print(f'text to find: {text}')
+
             radioButtons = driver.find_elements(By.XPATH, "//input[@type='radio']")
-            for rb in radioButtons:
+            texts = driver.find_elements(By.CLASS_NAME, className)
+
+            radioButtons = [rb for rb in radioButtons if rb]
+            texts = [t.text.strip() for t in texts if t and t.text]
+
+            # print(len(radioButtons), len(texts))
+
+            for t,rb in zip(texts,radioButtons):
                 if rb:
-                    print(rb.tag_name)
-                    print(rb.find_element(By.XPATH, '../..').text)
-                    if text in rb.find_element(By.XPATH, '../..').text.strip():
-                        print('FOUND radio button')
+                    if text in t:
+                        # print(f"FOUND radio button: {t}")
                         rb.click()
                         break
 
@@ -208,7 +214,7 @@ class CraigslistBot:
 
         sleep(random.uniform(2,3))
 
-        getRadioButtonByText(self.config['posting-type'])
+        getRadioButtonByText(self.config['posting-type'], 'right-side')
 
         try:
             driver.find_element(By.XPATH, '//button[@value="Continue"]').click()
@@ -217,7 +223,7 @@ class CraigslistBot:
 
         sleep(random.uniform(2,3))
 
-        getRadioButtonByText(self.config['category'])
+        getRadioButtonByText(self.config['category'], 'option-label')
 
         try:
             driver.find_element(By.XPATH, '//button[@value="continue"]').click()
@@ -297,13 +303,6 @@ def main():
                 bot = CraigslistBot(wd, config)
                 bot.listItem()
     print('time in ms: {}'.format((perf_counter() - start) * 1000))
-
-
-
-
-
-
-
 
 
 
