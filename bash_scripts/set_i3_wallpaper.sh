@@ -1,1 +1,1 @@
-feh --bg-fill /home/leo_zhang/custom_wallpapers/Community-wallpapers/merged/endeavouros_i3.png
+feh --bg-fill /home/leo_zhang/custom_wallpapers/Community-wallpapers/merged/Endy_planet_ARM.png
