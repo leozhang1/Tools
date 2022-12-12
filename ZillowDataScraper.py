@@ -16,6 +16,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 import undetected_chromedriver as uc
 import pandas as pd
+import concurrent.futures
 
 os.chdir(os.path.dirname(__file__))
 
@@ -43,14 +44,13 @@ def getAllPageLinks():
 
 	pageLinks = [atag.get_attribute('title') for atag in atags if atag and atag.get_attribute('title').startswith('Page')]
 
-	print(pageLinks)
+	# print(pageLinks)
 
 	driver.quit()
 
 	return pageLinks
 
-def getDataOnPage_ThreadWork():
-	url = 'https://www.zillow.com/homes/for_rent/Lakeland-FL'
+def getDataOnPage_ThreadWork(url):
 
 	options = webdriver.ChromeOptions()
 	# options.add_argument('--headless')
@@ -105,10 +105,19 @@ def getDataOnPage_ThreadWork():
 	return df
 
 if __name__ == "__main__":
-	getAllPageLinks()
+	links = getAllPageLinks()
+	ans = None
+	# multi-threading
+	with concurrent.futures.ThreadPoolExecutor() as executor:
+		res = executor.map(getDataOnPage_ThreadWork,links)
+		# list of dataframes
+		ans = list(res)
+
+	final_df = pd.concat(ans)
+	final_df.index.name = 'id'
 	# output_folder = Path.cwd() / 'data'
 	# output_folder.mkdir(exist_ok=True)
-	# df.to_csv(f"data/zillow_data_{strftime('%Y-%m-%d-%H-%M-%S')}.csv")
+	# final_df.to_csv(f"data/zillow_data_{strftime('%Y-%m-%d-%H-%M-%S')}.csv")
 
 
 
