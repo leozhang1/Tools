@@ -23,10 +23,11 @@ os.chdir(os.path.dirname(__file__))
 
 def getAllPageLinks():
 	url = 'https://www.zillow.com/homes/for_rent/Lakeland-FL'
-
+	userAgent = 'Mozilla/5.0 (X11; Linux x86_64; rv:107.0) Gecko/20100101 Firefox/107.0'
 	options = webdriver.ChromeOptions()
 	# options.add_argument('--headless')
 	options.add_argument('proxy-server=106.122.8.54:3128')
+	options.add_argument(f'user-agent={userAgent}')
 	driver = uc.Chrome(options=options)
 	driver.get(url)
 
@@ -44,7 +45,7 @@ def getAllPageLinks():
 
 	pageLinks = [atag.get_attribute('title') for atag in atags if atag and atag.get_attribute('title').startswith('Page')]
 
-	# print(pageLinks)
+	print(pageLinks)
 
 	driver.quit()
 
@@ -106,15 +107,15 @@ def getDataOnPage_ThreadWork(url):
 
 if __name__ == "__main__":
 	links = getAllPageLinks()
-	ans = None
-	# multi-threading
-	with concurrent.futures.ThreadPoolExecutor() as executor:
-		res = executor.map(getDataOnPage_ThreadWork,links)
-		# list of dataframes
-		ans = list(res)
+	# ans = None
+	# # multi-threading
+	# with concurrent.futures.ThreadPoolExecutor() as executor:
+	# 	res = executor.map(getDataOnPage_ThreadWork,links)
+	# 	# list of dataframes
+	# 	ans = list(res)
 
-	final_df = pd.concat(ans)
-	final_df.index.name = 'id'
+	# final_df = pd.concat(ans)
+	# final_df.index.name = 'id'
 	# output_folder = Path.cwd() / 'data'
 	# output_folder.mkdir(exist_ok=True)
 	# final_df.to_csv(f"data/zillow_data_{strftime('%Y-%m-%d-%H-%M-%S')}.csv")
