@@ -1,3 +1,17 @@
+
+
+'''
+flag phrases for us citizens:
+-U.S. Citizenship is required
+-Must be a US Citizen
+-You must be a U.S. citizen to apply for this job
+-U.S. Citizenship Required
+'''
+
+
+
+
+
 """
 example job listing:
 
@@ -100,7 +114,7 @@ if __name__ == '__main__':
         jobs = {}
 
     while True:
-        results = scrape('immigration')
+        results = scrape('programmer')
         for job in results:
             id = job['PositionID'] # alternatively, 'DocumentID'
             if id not in jobs:
