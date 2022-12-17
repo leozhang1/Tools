@@ -2,6 +2,7 @@
 # coding: utf-8
 
 # TODO: use undetected chrome driver
+import undetected_chromedriver as uc
 import requests
 import random
 import re
@@ -12,6 +13,8 @@ from bs4 import BeautifulSoup as soup
 
 HEADERS = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Safari/537.36", 'Accept-Language': 'en-US, en;q=0.5'}
 
+# TODO: Look into using this url: https://www.walmart.com/shop/deals?page=16 with selenium
+# stop using requests and bs4 as websites can easily block bots that simply use such an architecture
 
 html = requests.get('https://www.walmart.com/browse/personal-care/hand-soap/1005862_1001719?page=1',headers=HEADERS)
 
