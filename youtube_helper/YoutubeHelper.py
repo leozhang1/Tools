@@ -50,6 +50,8 @@ for key, video_file in zip(keys, videos):
 
     inputs = bot.find_elements(By.XPATH, '//*[@id="textbox"]')
 
+    # assuming that inputs always return two elements is kind of dangerous
+    # but I've tested many times and there's always two elements returned
     title, desc = inputs
 
     title.clear()
