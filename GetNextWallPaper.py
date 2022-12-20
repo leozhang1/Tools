@@ -23,7 +23,8 @@ def main():
 
     if os.stat(BASH_SCRIPT_PATH).st_size == 0:
         with open(BASH_SCRIPT_PATH, 'w') as f:
-            f.write(f'feh --bg-fill {PATH_TO_WALLPAPERS}{wallpapers[0]}')
+            cmd = f'feh --bg-fill {PATH_TO_WALLPAPERS}{wallpapers[0]}'
+            f.write(cmd)
         return
 
 
