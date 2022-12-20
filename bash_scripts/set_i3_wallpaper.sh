@@ -1,1 +1,1 @@
-feh --bg-fill /home/leo_zhang/custom_wallpapers/Community-wallpapers/merged/shjim_7_sway.png
+feh --bg-fill /home/leo_zhang/custom_wallpapers/Community-wallpapers/merged/blinky_3.png

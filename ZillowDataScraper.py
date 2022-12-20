@@ -51,7 +51,6 @@ def getAllPageLinks(url):
 	return pageLinks
 
 def getDataOnPage_ThreadWork(url):
-
 	options = webdriver.ChromeOptions()
 	# options.add_argument('--headless')
 	# options.add_argument('proxy-server=106.122.8.54:3128')
