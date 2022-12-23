@@ -1,3 +1,10 @@
+import platform
+
+if platform.system() == "Linux":
+    import linux_tools as tools
+elif platform.system() == "Windows":
+    import windows_tools as tools
+
 from concurrent.futures import ProcessPoolExecutor
 import time
 from requests_futures.sessions import FuturesSession
@@ -5,7 +12,7 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import os
 import sys
-sys.path.append('/home/leo_zhang/Documents/GitHub/automate_texting/')
+sys.path.append(tools.AUTOMATE_TEXTING_PATH)
 from automate_texting import send_message
 
 # expand all: ctrl m + j

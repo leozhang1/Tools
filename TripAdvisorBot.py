@@ -113,6 +113,6 @@ final_df = pd.concat(ans)
 final_df.index.name = 'id'
 output_folder = Path.cwd() / 'data'
 output_folder.mkdir(exist_ok=True)
-final_df.to_csv(f"data/trip_advisor_{cityName}_{strftime('%Y-%m-%d-%H-%M-%S')}.csv")
-print(f'total time in seconds: {(perf_counter() - start) // 6}')
+final_df.to_csv(f"{os.getcwd()}/data/trip_advisor_{cityName}_{strftime('%Y-%m-%d-%H-%M-%S')}.csv")
+# print(f'total time in seconds: {(perf_counter() - start) // 6}')
 

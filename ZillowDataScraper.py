@@ -104,9 +104,9 @@ def getDataOnPage_ThreadWork(url):
 	return df
 
 if __name__ == "__main__":
-	#city_state = 'Lakeland-FL'
+	city_state = 'Lakeland-FL'
 	# city_state = 'tallahassee-FL'
-	city_state = 'Melbourne-FL'
+	# city_state = 'Melbourne-FL'
 	url = f'https://www.zillow.com/homes/for_rent/{city_state}'
 	links = getAllPageLinks(url)
 	ans = None
@@ -121,7 +121,7 @@ if __name__ == "__main__":
 	print(final_df)
 	output_folder = Path.cwd() / 'data'
 	output_folder.mkdir(exist_ok=True)
-	final_df.to_csv(f"data/zillow_{city_state}_{strftime('%Y-%m-%d-%H-%M-%S')}.csv")
+	final_df.to_csv(f"{os.getcwd()}/data/zillow_{city_state}_{strftime('%Y-%m-%d-%H-%M-%S')}.csv")
 
 
 

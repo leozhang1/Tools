@@ -3,9 +3,15 @@
 # Prerequistes mentioned in the video:
 # In settings:
 #   - make sure videos are never made for kids
+import platform
+
+if platform.system() == "Linux":
+    import linux_tools as tools
+elif platform.system() == "Windows":
+    import windows_tools as tools
+
 import json
 import os
-import pwd
 import random
 from time import sleep
 
@@ -34,8 +40,8 @@ for key, video_file in zip(keys, videos):
     # which chrome profile to use
     chrome_options.add_argument('--profile-directory=Default')
     # directory containing all the profiles
-    chrome_options.add_argument(f"--user-data-dir=/home/{pwd.getpwuid(os.getuid()).pw_name}/.config/google-chrome/")
-    chrome_options.binary_location = "/opt/google/chrome/google-chrome"
+    chrome_options.add_argument(f"--user-data-dir={tools.CHROME_DATA_PATH}")
+    chrome_options.binary_location = tools.CHROME_BINARY_LOCATION
     bot = uc.Chrome(options=chrome_options)
     bot.get("https://studio.youtube.com")
     sleep(3)

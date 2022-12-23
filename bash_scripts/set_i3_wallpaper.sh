@@ -1,1 +1,1 @@
-feh --bg-fill /home/leo_zhang/custom_wallpapers/Community-wallpapers/merged/Rockwallaby_Atlantis.jpeg
+feh --bg-fill /home/leo_zhang/custom_wallpapers/Community-wallpapers/merged/endeavour_flavours.png

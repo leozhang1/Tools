@@ -1,3 +1,10 @@
+import platform
+
+if platform.system() == "Linux":
+    import linux_tools as tools
+elif platform.system() == "Windows":
+    import windows_tools as tools
+
 import os
 import sys
 import re
@@ -6,12 +13,11 @@ os.chdir(os.path.dirname(__file__))
 
 # write to bash script the next item in the absolute path
 BASH_SCRIPT_PATH = os.getcwd() + '/' + 'bash_scripts/set_i3_wallpaper.sh'
-PATH_TO_WALLPAPERS = '/home/leo_zhang/custom_wallpapers/Community-wallpapers/merged/'
 if not os.path.exists(BASH_SCRIPT_PATH):
     open(BASH_SCRIPT_PATH,'w').close()
 
 # TODO: don't assume wallpapers is not empty
-wallpapers = os.listdir(PATH_TO_WALLPAPERS)
+wallpapers = os.listdir(tools.PATH_TO_WALLPAPERS)
 for wallpaper in wallpapers:
     print(wallpaper)
 
@@ -23,7 +29,7 @@ def main():
 
     if os.stat(BASH_SCRIPT_PATH).st_size == 0:
         with open(BASH_SCRIPT_PATH, 'w') as f:
-            cmd = f'feh --bg-fill {PATH_TO_WALLPAPERS}{wallpapers[0]}'
+            cmd = f'feh --bg-fill {tools.PATH_TO_WALLPAPERS}{wallpapers[0]}'
             f.write(cmd)
         return
 
@@ -42,7 +48,7 @@ def main():
             pos = wallpapers.index(filename)
             # print(f'position: {pos}')
             # write the next wallpaper at the (p + 1)th position to the bash script
-            w.write(f'feh --bg-fill {PATH_TO_WALLPAPERS}{wallpapers[(pos+1)%len(wallpapers)]}')
+            w.write(f'feh --bg-fill {tools.PATH_TO_WALLPAPERS}{wallpapers[(pos+1)%len(wallpapers)]}')
 
 if __name__ == "__main__":
     main()

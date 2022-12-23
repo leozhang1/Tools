@@ -1,7 +1,14 @@
 import requests
-import pprint
 import json
 import os
+
+import platform
+
+if platform.system() == "Linux":
+    import linux_tools as tools
+elif platform.system() == "Windows":
+    import windows_tools as tools
+
 
 data = [
 	{"title": "okcupidbot"},
@@ -22,7 +29,7 @@ res = json.loads((r.content).decode('utf-8'))
 #pprint.pprint(res)
 #print(type(res))
 
-baseDir = '/home/leo_zhang/Documents/GitHub/'
+baseDir = tools.BASE_DIR
 currentGitHubFolder = None
 for obj in res:
     for k, v in obj.items():

@@ -1,3 +1,10 @@
+import platform
+
+if platform.system() == "Linux":
+    import linux_tools as tools
+elif platform.system() == "Windows":
+    import windows_tools as tools
+
 import json
 import os
 import random
@@ -47,7 +54,7 @@ def driver(*args, **kwargs):
     # firefox_options.add_argument("--disable-extensions")
     # firefox_options.add_argument("--disable-popup-blocking")
 
-    d = webdriver.Firefox(service=Service(GeckoDriverManager().install(), log_path='/tmp/geckodriver.log'), options=firefox_options,)
+    d = webdriver.Firefox(service=Service(GeckoDriverManager().install(), log_path=f'{tools.LOG_PATH}geckodriver.log'), options=firefox_options,)
 
     try:
         yield d
