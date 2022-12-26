@@ -1,11 +1,13 @@
 # import sys
-# sys.path.append('/home/leo_zhang/Documents/GitHub/automate_texting/')
+# sys.path.append(f'/home/{pwd.getpwuid(os.getuid()).pw_name}/Documents/GitHub/automate_texting/')
 # from automate_texting import send_message
 
 # send_message('from cron')
 
+import re
+
+import requests
 from bs4 import BeautifulSoup
-import requests, re
 
 r = requests.get('https://leetcode.com/problemset/all/')
 soup = BeautifulSoup(r.content, 'html.parser')

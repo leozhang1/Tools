@@ -1,1 +1,1 @@
-feh --bg-fill /home/leo_zhang/custom_wallpapers/Community-wallpapers/merged/endeavour_flavours.png
+feh --bg-fill /home/leo_zhang/custom_wallpapers/Community-wallpapers/merged/EOS_SMOOTH_PURPLE.png
