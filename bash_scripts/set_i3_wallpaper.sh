@@ -1,0 +1,1 @@
+feh --bg-fill /home/leo_zhang/custom_wallpapers/Community-wallpapers/merged/HAL-OS-USB-SORRY.png
