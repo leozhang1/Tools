@@ -1,6 +1,7 @@
 import requests
 import json
 import os
+import pprint
 
 import platform
 
@@ -14,35 +15,28 @@ data = [
 	{"title": "okcupidbot"},
 	{"title": "tdr_bot"},
 	{"title": "bmbl_bot"},
-	{"title": "FlightScraper"},
-	{"title": "GeneralDB"},
 	{"title": "GithubAutomation"},
 	{"title": "NewsScraper"},
-	{"title": "TaxLienScraper"},
 	{"title": "automate_texting"},
-	{"title": "leo_personal_website"},
 ]
 
-r = requests.get("http://localhost:3001/gh-router/get", json=data)
+r = requests.get("http://localhost:5048/api/Account/", json=data)
 
 res = json.loads((r.content).decode('utf-8'))
-#pprint.pprint(res)
-#print(type(res))
+lstOfDicts = list(eval(res))
+# pprint.pprint(lstOfDicts)
+# print(type(lstOfDicts))
 
 baseDir = tools.BASE_DIR
 currentGitHubFolder = None
-for obj in res:
-    for k, v in obj.items():
-        if k == 'title':
-            currentGitHubFolder = v
-        elif k == 'secrets':
-            # create file in the directory baseDir + v
-            if currentGitHubFolder:
-                print(f'adding .env with the contents below to file to {currentGitHubFolder}')
-                print(v)
-                if not os.path.exists(baseDir+currentGitHubFolder+'/.env'):
-                    open(baseDir+currentGitHubFolder+'/.env', 'w').close()
-                with open(baseDir+currentGitHubFolder+'/.env', 'w+') as f:
-                    for exp in v:
-                        f.write(exp+'\n')
+for account in lstOfDicts:
+    title = account['title']
+    password = account['password']
+    currentGitHubFolder = baseDir + title
+    if os.path.exists(currentGitHubFolder):
+        if not os.path.exists(currentGitHubFolder+'/.env'):
+            print(f'adding .env with the contents below to file to {currentGitHubFolder}')
+            open(currentGitHubFolder+'/.env', 'w').close()
+            with open(currentGitHubFolder+'/.env', 'w+') as f:
+                f.write(password+'\n')
 
