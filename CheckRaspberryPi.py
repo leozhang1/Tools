@@ -12,8 +12,8 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import os
 import sys
-sys.path.append(tools.AUTOMATE_TEXTING_PATH)
-from automate_texting import send_message
+sys.path.append(tools.AUTOMATE_EMAIL_PATH)
+from EmailingTool import EmailTool
 
 # expand all: ctrl m + j
 # collapse all: ctrl k + 0
@@ -137,7 +137,7 @@ def main():
 
     # print(messages)
 
-    send_message('\n'.join(messages) + f'\n{time.strftime("%Y-%m-%d")}')
+    EmailTool.sendEmail('','', ['leozhang12345678@gmail.com'], 'Raspberry_pi_results', '\n'.join(messages) + f'\n{time.strftime("%Y-%m-%d")}')
 
 if __name__ == '__main__':
     main()
